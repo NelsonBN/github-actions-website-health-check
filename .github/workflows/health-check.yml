@@ -1,0 +1,25 @@
+name: "Demo - Website Health Check"
+
+on:
+  workflow_dispatch:
+
+env:
+  website_url: "https://test.pt/"
+
+jobs:
+  check-website:
+    name: "Website Health Check"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: "Check Website Status"
+        run: |
+          status_code=$(curl --write-out "%{http_code}" --silent --output /dev/null ${{ env.website_url }})
+          echo "Website status code: $status_code"
+
+          if [ "$status_code" -ne 200 ]; then
+            echo "Website is down or unhealthy (status code: $status_code)"
+            exit 1
+          else
+            echo "Website is healthy (status code: $status_code)"
+          fi
