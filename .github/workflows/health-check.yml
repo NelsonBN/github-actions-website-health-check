@@ -29,10 +29,11 @@ jobs:
           while [ $retry_count -lt ${{ env.max_retries }} ]; do
             status_code=$(curl --connect-timeout ${{ env.connection_timeout }} --max-time ${{ env.max_time }} --write-out "%{http_code}" --silent --output /dev/null ${{ github.event.inputs.website_url }})
 
-            echo "Attempt $(($retry_count + 1)): Website status code: ${status_code}"
+            echo "Attempt $(($retry_count + 1)): Website {${{ github.event.inputs.website_url }} status code: ${status_code}"
 
             if [ "$status_code" -eq ${{ env.expected_status_code }} ]; then
               echo "Website is healthy (status code: ${status_code})"
+              success=true
               break
             else
               echo "Website is down or unhealthy (status code: ${status_code} - expected: ${{ env.expected_status_code }})"
@@ -43,3 +44,8 @@ jobs:
               fi
             fi
           done
+
+          if [ "$success" = false ]; then
+            echo "Failed to verify website status after ${{ env.max_retries }} attempts."
+            exit 1
+          fi
