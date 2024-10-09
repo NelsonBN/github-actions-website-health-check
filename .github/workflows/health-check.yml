@@ -38,7 +38,7 @@ jobs:
             else
               echo "Website is down or unhealthy (status code: ${status_code} - expected: ${{ env.expected_status_code }})"
               retry_count=$(($retry_count + 1))
-              if [ $retry_count -lt $max_retries ]; then
+              if [ $retry_count -lt ${{ env.max_retries }} ]; then
                 echo "Retrying in ${{ env.wait_time }} seconds..."
                 sleep ${{ env.wait_time }}
               fi
