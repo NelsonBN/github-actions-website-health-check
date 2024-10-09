@@ -13,7 +13,7 @@ env:
   connection_timeout: 15 # Maximum time in seconds that you allow the connection to the server to take
   max_time: 30 # Maximum time in seconds that you allow the whole operation to take
   max_retries: 5 # Maximum number of retries
-  wait_time: 5 # Time in seconds to wait between retries
+  wait_time: 15 # Time in seconds to wait between retries
 
 jobs:
   check-website:
